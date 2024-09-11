@@ -67,19 +67,22 @@ router.get('/characters/:characterId', async (req, res, next) => {
 router.delete('/characters/:characterId', async (req, res, next) => {
   const { characterId } = req.params;
 
-  const character = await prisma.characters.findUnique({
+  const uncharacter = await prisma.characters.findUnique({
     where: {
       characterId: +characterId,
     },
   });
-  if (!character) return res.status(404).json({ message: '캐릭터가 존재하지 않습니다.' });
+  if (!uncharacter) return res.status(404).json({ message: '캐릭터가 존재하지 않습니다.' });
 
-  await prisma.characters.delete({
+  const character = await prisma.characters.delete({
     where: {
       characterId: +characterId,
     },
+    select: {
+      character_name: true,
+    },
   });
-  return res.status(200).json({ message: `캐릭터가 삭제되었습니다.` });
+  return res.status(200).json({ message: character });
 });
 
 export default router;
