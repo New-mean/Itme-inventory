@@ -55,15 +55,6 @@ router.get('/characters/:characterId', async (req, res, next) => {
 });
 
 //** 캐릭터 삭제 API */
-// router.delete('/characters/:characterId', authMiddleware, async (req, res, next) => {
-//   const { characterId } = req.params;
-//   const characterDel = await prisma.characters.delete({
-//     where: {
-//       characterId: +characterId,
-//     },
-//   });
-//   return res.status(200).json({ message: '캐릭터가 삭제 되었습니다.' });
-// });
 router.delete('/characters/:characterId', async (req, res, next) => {
   const { characterId } = req.params;
 

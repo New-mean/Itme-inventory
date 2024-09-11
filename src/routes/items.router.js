@@ -7,12 +7,18 @@ const router = express.Router();
 //** 아이템 생성 API */
 router.post('/items', async (req, res, next) => {
   const { itemcode, item_name, item_stat, item_price } = req.body;
+  //   const item = await prisma.items.findFirst({
+  //     where: {
+  //       itemcode,
+  //     },
+  //   });
+  //   if (!item) return res.status(404).json({ message: '존재하지 않는 아이템입니다.' });
   const itme = await prisma.items.create({
     data: {
       itemcode: itemcode,
-      item_name,
-      item_stat,
-      item_price,
+      item_name: item_name,
+      item_stat: item_stat,
+      item_price: item_price,
     },
   });
   return res.status(201).json({ message: '아이템이 생성되었습니다.' });
@@ -23,24 +29,23 @@ router.put('/itmes/:itemcode', async (req, res, next) => {
   const { itemcode } = req.params;
   const { item_name, item_stat } = req.body;
 
-  const item = await prisma.items.findFirst({
+  const unitem = await prisma.items.findUnique({
     where: {
       itemcode: +itemcode,
     },
   });
-  if (!item)
-    return res.status(404).json({ message: '아이템이 존재하지 않습니다.' });
+  if (!unitem) return res.status(404).json({ message: '아이템이 존재하지 않습니다.' });
 
-  await prisma.items.update({
+  const updateItem = await prisma.items.update({
+    where: {
+      itemcode: +itemcode,
+    },
     data: {
       item_name: item_name,
-      item_stat: item_stat,
-    },
-    where: {
-      itemcode: +itemcode,
+      item_stat: { atk: item_stat.atk, hp: item_stat.hp },
     },
   });
-  return res.status(200).json({ data: '아이템이 수정되었습니다.' });
+  return res.status(200).json({ message: '아이템이 수정되었습니다.' });
 });
 
 //** 아이템 목록 조회 API */
