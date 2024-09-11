@@ -46,10 +46,6 @@ router.get('/characters/:characterId', async (req, res, next) => {
       character_createdAt: true,
     },
   });
-  //   if (!)
-  //     return res
-  //       .status(200)
-  //       .json({ data: { charater_name, character_health, character_power } });
 
   return res.status(200).json({ data: character });
 });
