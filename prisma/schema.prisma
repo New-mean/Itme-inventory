@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+model Users {
+  userId     Int         @id @default(autoincrement()) @map("userId")
+  id         String      @unique @map("email")
+  password   String      @map("password")
+  repassword String      @map("repassword")
+  name       String      @map("name")
+  createdAt  DateTime    @default(now()) @map("createdAt")
+  updatedAt  DateTime    @updatedAt @map("updatedAt")
+  character  Characters[]
+
+  @@map("Users")
+}
+
+model Characters {
+  characterId         Int      @id @default(autoincrement()) @map("characterId")
+  userId              Int       @map("userId")
+  character_name      String   @map("character_name")
+  character_health    Int      @map("character_health")
+  character_power     Int      @map("character_power")
+  character_createdAt DateTime @default(now()) @map("character_createdAt")
+  character_updatedAt DateTime @updatedAt @map("character_updatedAt")
+  character_money     Int      @map("character_money")
+  user                Users    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@map("Characters")
+}
+
+model Items {
+  itemcode       Int      @id @unique @default(autoincrement()) @map("itemId")
+  item_name      String   @map("item_name")
+  item_price     Int      @map("item_price")
+  item_stat      Json     @map("item_stat")
+  item_createdAt DateTime @default(now()) @map("item_createdAt")
+  item_updatedAt DateTime @updatedAt @map("item_updatedAt")
+
+  @@map("Items")
+}
