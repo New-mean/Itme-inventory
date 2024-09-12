@@ -10,9 +10,7 @@ const router = express.Router();
 router.post('/signup', async (req, res, next) => {
   const { id, password, repassword, name } = req.body;
   if (!/^[a-z0-9]+$/.test(id))
-    return res
-      .status(400)
-      .json({ message: '아이디는 영문과 숫자의 조합이어야 합니다.' });
+    return res.status(400).json({ message: '아이디는 영문과 숫자의 조합이어야 합니다.' });
 
   if (password.length < 6)
     return res.status(409).send({ message: '비밀번호를 다시 작성해주세요.' });
@@ -23,11 +21,9 @@ router.post('/signup', async (req, res, next) => {
     },
   });
   if (!id || !password)
-    return res
-      .status(400)
-      .json({ message: 'id, password는 필수입력 사항입니다.' });
+    return res.status(400).json({ message: 'id, password는 필수입력 사항입니다.' });
   if (isExistUser) {
-    return res.status(409).json({ message: '이미 존재하는 아이디입니다.' });
+    return res.status(400).json({ message: '이미 존재하는 아이디입니다.' });
   }
 
   if (password !== repassword) {
@@ -47,8 +43,7 @@ router.post('/login', async (req, res, next) => {
   const { id, password } = req.body;
   const user = await prisma.users.findFirst({ where: { id } });
 
-  if (!user)
-    return res.status(401).json({ message: '존재하지 않는 이메일입니다.' });
+  if (!user) return res.status(401).json({ message: '존재하지 않는 아이디입니다.' });
   else if (!(await bcrypt.compare(password, user.password)))
     return res.status(401).json({ message: '비밀번호가 일치하지 않습니다.' });
 

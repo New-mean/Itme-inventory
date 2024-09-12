@@ -28,7 +28,7 @@ router.put('/itmes/:itemcode', async (req, res, next) => {
       itemcode: +itemcode,
     },
   });
-  if (!unitem) return res.status(404).json({ message: '아이템이 존재하지 않습니다.' });
+  if (!unitem) return res.status(400).json({ message: '아이템이 존재하지 않습니다.' });
 
   const updateItem = await prisma.items.update({
     where: {
