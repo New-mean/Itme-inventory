@@ -5,7 +5,7 @@ import CharactersRouter from './routes/characters.router.js';
 import ItemsRouter from './routes/items.router.js';
 
 const app = express();
-const PORT = 3000;
+const PORT = 3018;
 
 app.use(express.json());
 app.use(cookieParser());
