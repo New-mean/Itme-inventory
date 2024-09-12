@@ -63,7 +63,7 @@ router.delete('/characters/:characterId', async (req, res, next) => {
       characterId: +characterId,
     },
   });
-  if (!uncharacter) return res.status(404).json({ message: '캐릭터가 존재하지 않습니다.' });
+  if (!uncharacter) return res.status(400).json({ message: '캐릭터가 존재하지 않습니다.' });
 
   const character = await prisma.characters.delete({
     where: {
