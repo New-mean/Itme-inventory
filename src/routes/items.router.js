@@ -7,12 +7,6 @@ const router = express.Router();
 //** 아이템 생성 API */
 router.post('/items', async (req, res, next) => {
   const { itemcode, item_name, item_stat, item_price } = req.body;
-  //   const item = await prisma.items.findFirst({
-  //     where: {
-  //       itemcode,
-  //     },
-  //   });
-  //   if (!item) return res.status(404).json({ message: '존재하지 않는 아이템입니다.' });
   const itme = await prisma.items.create({
     data: {
       itemcode: itemcode,
